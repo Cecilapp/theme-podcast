@@ -18,3 +18,26 @@ Add `podcast` in the `themes` section of your `config.yml`:
 theme:
   - podcast
 ```
+
+Add podcast details:
+
+```yaml
+podcast:
+  author: Cecil
+  owner:
+    name: Cecil
+    email: contact@cecil.app
+  image: /images/cecil-logo.png
+  categories:
+    - Society & Culture
+    - History
+```
+
+Add episodes in `episodes`'s section with this required informations:
+
+```yaml
+---
+episode:
+  file: /audio/test.mp3
+---
+```
