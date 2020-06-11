@@ -1,2 +1,20 @@
-<audio controls src="{{ page.episode.file }}" />
+<audio controls src="{{ page.episode.file }}" id="audioplayer" />
 <p><a href="{{ page.episode.file }}" target="_blank" rel="noopener" download>Download file</a> | <a href="{{ page.episode.file }}" target="_blank" rel="noopener">Play in new window</a></p>
+<script>
+  let audioplayer = document.getElementById('audioplayer');
+  // resume position
+  audioplayer.onloadedmetadata = (event) => {
+    if (audioplayer.currentTime == 0) {
+      let startTime = localStorage.getItem('{{ page.path }}');
+      if (startTime > 0) {
+        audioplayer.currentTime = startTime;
+      }
+    }
+  };
+  // save position
+  audioplayer.ontimeupdate = function() {
+    if (audioplayer.currentTime > 0) {
+      localStorage.setItem('{{ page.path }}', audioplayer.currentTime);
+    }
+  };
+</script>
