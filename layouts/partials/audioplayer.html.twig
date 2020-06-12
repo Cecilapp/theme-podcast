@@ -15,10 +15,17 @@
     //};
     // save position
     audioplayer.ontimeupdate = function() {
-      document.title = '{{ page.title }} (' + Math.round(audioplayer.currentTime) + 's)';
+      document.title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
       if (audioplayer.currentTime > 0) {
         localStorage.setItem('{{ page.episode.file }}', audioplayer.currentTime);
       }
     };
+    // format time
+    function formatTime(time) {
+      let m = Math.floor(time % 3600 / 60).toString().padStart(2,'0'),
+          s = Math.floor(time % 60).toString().padStart(2,'0');
+
+      return m + ':' + s;
+    }
   });
 </script>
