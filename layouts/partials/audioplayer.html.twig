@@ -4,11 +4,10 @@
   let audioplayer = document.getElementById('audioplayer');
   // resume position
   audioplayer.onloadedmetadata = (event) => {
-    if (audioplayer.currentTime == 0) {
-      let startTime = localStorage.getItem('{{ page.path }}');
-      if (startTime > 0) {
-        audioplayer.currentTime = startTime;
-      }
+    let startTime = localStorage.getItem('{{ page.path }}');
+    console.log('startTime: ', startTime);
+    if (startTime > 0) {
+      audioplayer.currentTime = startTime;
     }
   };
   // save position
