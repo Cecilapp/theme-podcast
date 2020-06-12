@@ -1,19 +1,24 @@
-<audio controls src="{{ page.episode.file }}" id="audioplayer" />
+<audio controls src="{{ page.episode.file }}" id="audioplayer"></audio>
 <p><a href="{{ page.episode.file }}" target="_blank" rel="noopener" download>Download file</a> | <a href="{{ page.episode.file }}" target="_blank" rel="noopener">Play in new window</a></p>
 <script>
-  let audioplayer = document.getElementById('audioplayer');
-  // resume position
-  audioplayer.onloadedmetadata = (event) => {
-    let startTime = localStorage.getItem('{{ page.path }}');
-    console.log('startTime: ', startTime);
-    if (startTime > 0) {
-      audioplayer.currentTime = startTime;
-    }
-  };
-  // save position
-  audioplayer.ontimeupdate = function() {
-    if (audioplayer.currentTime > 0) {
-      localStorage.setItem('{{ page.path }}', audioplayer.currentTime);
-    }
-  };
+  window.addEventListener('DOMContentLoaded', (event) => {
+    let audioplayer = document.getElementById('audioplayer');
+    // resume position
+    //audioplayer.onloadedmetadata = (event) => {
+    setTimeout(function() {
+      let startTime = localStorage.getItem('{{ page.episode.file }}');
+      console.log('startTime: ', startTime);
+      if (startTime !== null) {
+        audioplayer.currentTime = startTime;
+      }
+    }, 1000);
+    //};
+    // save position
+    audioplayer.ontimeupdate = function() {
+      document.title = '{{ page.title }} (' + Math.round(audioplayer.currentTime) + 's)';
+      if (audioplayer.currentTime > 0) {
+        localStorage.setItem('{{ page.episode.file }}', audioplayer.currentTime);
+      }
+    };
+  });
 </script>
