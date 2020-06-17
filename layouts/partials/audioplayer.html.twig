@@ -15,39 +15,45 @@
     //};
     // save position
     audioplayer.ontimeupdate = function() {
-      document.title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
       if (audioplayer.currentTime > 0) {
         localStorage.setItem('{{ page.episode.file }}', audioplayer.currentTime);
       }
+      // update page's title (and meta datas)
+      const title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
+      document.title = title;
+      // meta data
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')',
+          artist: '{{ page.episode.author|default(site.podcast.author) }}',
+          artwork: [
+            { src: '{{ asset(page.episode.image|default(site.podcast.image))|url }}', sizes: '1400x1400', type: 'image/png' },
+          ]
+        });
+      }
     };
+    // backward or forward 10s
+    if ('mediaSession' in navigator) {
+      const defaultSkipTime = 10;
+      try {
+        navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+          const skipTime = details.seekOffset || defaultSkipTime;
+          audioplayer.currentTime = Math.max(audioplayer.currentTime - skipTime, 0);
+        });
+        navigator.mediaSession.setActionHandler('seekforward', (details) => {
+          const skipTime = details.seekOffset || defaultSkipTime;
+          audioplayer.currentTime = Math.min(audioplayer.currentTime + skipTime, audioplayer.duration);
+        });
+      } catch (error) {
+        console.log('The media session action "${action}" is not supported yet.');
+      }
+    }
     // format time
     function formatTime(time) {
       let m = Math.floor(time % 3600 / 60).toString().padStart(2,'0'),
           s = Math.floor(time % 60).toString().padStart(2,'0');
 
       return m + ':' + s;
-    }
-    // Media Session API
-    if ('mediaSession' in navigator) {
-      // meta data
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: '{{ page.title }}',
-        artist: '{{ page.episode.author|default(site.podcast.author) }}',
-        //album: '{{ site.baseline }}',
-        artwork: [
-          { src: '{{ asset(page.episode.image|default(site.podcast.image))|url }}', sizes: '1400x1400', type: 'image/png' },
-        ]
-      });
-      // seek
-      const defaultSkipTime = 10;
-      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-        const skipTime = details.seekOffset || defaultSkipTime;
-        audioplayer.currentTime = Math.max(audioplayer.currentTime - skipTime, 0);
-      });
-      navigator.mediaSession.setActionHandler('seekforward', (details) => {
-        const skipTime = details.seekOffset || defaultSkipTime;
-        audioplayer.currentTime = Math.min(audioplayer.currentTime + skipTime, audioplayer.duration);
-      });
     }
   });
 </script>
