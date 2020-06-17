@@ -11,6 +11,11 @@
       if (startTime !== null) {
         audioplayer.currentTime = startTime;
       }
+      // autoplay
+      const hash = window.location.hash
+      if (hash == '#autoplay') {
+        audioplayer.play();
+      }
     }, 1000);
     //};
     // save position
@@ -32,10 +37,11 @@
         });
       }
     };
-    // backward or forward 10s
+    // constrols
     if ('mediaSession' in navigator) {
       const defaultSkipTime = 10;
       try {
+        // backward or forward 10s
         navigator.mediaSession.setActionHandler('seekbackward', (details) => {
           const skipTime = details.seekOffset || defaultSkipTime;
           audioplayer.currentTime = Math.max(audioplayer.currentTime - skipTime, 0);
@@ -44,6 +50,20 @@
           const skipTime = details.seekOffset || defaultSkipTime;
           audioplayer.currentTime = Math.min(audioplayer.currentTime + skipTime, audioplayer.duration);
         });
+{% if page.prev is defined  %}
+        // previous episode
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+          console.log('previous: {{ page.prev.title }}');
+          window.location = '{{ url(page.prev.path) }}#autoplay';
+        });
+{% endif  %}
+{% if page.next is defined  %}
+        // next episode
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+          console.log('next: {{ page.next.title }}');
+          window.location = '{{ url(page.next.path) }}#autoplay';
+        });
+{% endif  %}
       } catch (error) {
         console.log('The media session action "${action}" is not supported yet.');
       }
