@@ -2,6 +2,7 @@
 
 {% block feed %}
 <?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="{{ url('stylesheet.xsl') }}"?>
 <rss version="2.0"
  xmlns:content="http://purl.org/rss/1.0/modules/content/"
  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
@@ -25,12 +26,14 @@
       <itunes:name>{{ site.podcast.owner.name }}</itunes:name>
       <itunes:email>{{ site.podcast.owner.email }}</itunes:email>
     </itunes:owner>
+    <image href="{{ url(site.podcast.image,{canonical:true}) }}" />
     <googleplay:image href="{{ url(site.podcast.image,{canonical:true}) }}" />
     <itunes:image href="{{ url(site.podcast.image,{canonical:true}) }}" />
 {% for category in site.podcast.categories %}{# https://help.apple.com/itc/podcasts_connect/#/itc9267a2f12 #}
     <itunes:category text="{{ category|e }}" />
 {% endfor %}
     <itunes:explicit>{{ site.podcast.explicit|default('false') }}</itunes:explicit>
+    <generator>{{ cecil.url }}</generator>
 {# /podcast #}
 {% for item in pages|sort_by_date %}
 {% set file = asset(item.episode.file) %}
