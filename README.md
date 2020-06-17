@@ -41,3 +41,9 @@ episode:
   file: /audio/test.mp3
 ---
 ```
+
+Add the HTML player to your episode's template:
+
+```twig
+{% include 'partials/audioplayer.html.twig' %}
+```
