@@ -27,5 +27,27 @@
 
       return m + ':' + s;
     }
+    // Media Session API
+    if ('mediaSession' in navigator) {
+      // meta data
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: '{{ page.title }}',
+        artist: '{{ page.episode.author|default(site.podcast.author) }}',
+        //album: '{{ site.baseline }}',
+        artwork: [
+          { src: '{{ asset(page.episode.image|default(site.podcast.image))|url }}', sizes: '1400x1400', type: 'image/png' },
+        ]
+      });
+      // seek
+      const defaultSkipTime = 10;
+      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+        const skipTime = details.seekOffset || defaultSkipTime;
+        audioplayer.currentTime = Math.max(audioplayer.currentTime - skipTime, 0);
+      });
+      navigator.mediaSession.setActionHandler('seekforward', (details) => {
+        const skipTime = details.seekOffset || defaultSkipTime;
+        audioplayer.currentTime = Math.min(audioplayer.currentTime + skipTime, audioplayer.duration);
+      });
+    }
   });
 </script>
