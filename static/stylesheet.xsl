@@ -11,7 +11,7 @@
             font-family: Helvetica, Arial, sans-serif;
             font-size: 14px;
             color: #545454;
-            background: #E5E5E5;
+            background: #F1F3F4;
             line-height: 1.5;
           }
           a, a:link, a:visited {
