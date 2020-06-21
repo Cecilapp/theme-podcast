@@ -38,7 +38,7 @@
 {% for item in pages|sort_by_date %}
 {% set file = asset(item.episode.file) %}
     <item>
-      <guid>{{ url(file, {canonical:true}) }}</guid>
+      <guid>{{ url(item, {canonical:true}) }}</guid>
       <title>{{ item.title }}</title>
       <description><![CDATA[{{ item.content }}]]></description>
       <pubDate>{{ item.date|date('c') }}</pubDate>
