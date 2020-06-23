@@ -25,6 +25,9 @@
             margin-top: 0;
             margin-bottom: 20px;
           }
+          h2 {
+            margin-bottom: 5px;
+          }
           h3 {
             font-style: italic;
           }
@@ -69,6 +72,11 @@
             height: auto;
             margin: 0 30px 15px 0;
             border-radius: 5px;
+          }
+          .episode-time {
+            font-size: 12px;
+            color: #545d67;
+            margin-bottom: 1em;
           }
           .episode-meta {
             font-size: 11px;
