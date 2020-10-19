@@ -27,18 +27,36 @@ podcast:
   owner:
     name: Cecil
     email: contact@cecil.app
-  image: /images/cecil-logo.png
+  image: cover.png
   categories:
-    - Society & Culture
-    - History
+    - Technology
+  explicit: "false"
+  type: episodic
+  subscribe:
+    - name: apple
+      url: https://podcasts.apple.com/fr/podcast/staticast/idXXXXXXXXXX
+      enabled: true
+    - name: google
+      url: https://podcasts.google.com/feed/XXXXXXXXXX
+      enabled: true
+    - name: spotify
+      url: https://open.spotify.com/show/XXXXXXXXXX
+      enabled: true
 ```
 
 Add episodes in `episodes`'s section with this required informations:
 
 ```yaml
 ---
+title: "Episode X"
+date: YYYY-MM-DD
 episode:
-  file: /audio/test.mp3
+  file: /episode-X.mp3
+  season: 0
+  number: X
+  type: full
+  explicit: "false"
+  block: no
 ---
 ```
 
