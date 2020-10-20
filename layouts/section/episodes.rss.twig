@@ -41,9 +41,13 @@
     <googleplay:image href="{{ url(site.podcast.image, {canonical:true}) }}" />
 {% for category in site.podcast.categories %}{# https://help.apple.com/itc/podcasts_connect/#/itc9267a2f12 #}
     <itunes:category text="{{ category|e }}" />
+    <googleplay:category text="{{ category|e }}" />
 {% endfor %}
-    <itunes:explicit>{{ site.podcast.explicit|default('false')|lower }}</itunes:explicit>
+    <itunes:explicit>{{ site.podcast.explicit|default('no') }}</itunes:explicit>
+    <googleplay:explicit>{{ site.podcast.explicit|default('no') }}</googleplay:explicit>
     <itunes:type>{{ site.podcast.type|default('episodic') }}</itunes:type>{# 'episodic' or 'serial' #}
+    <itunes:block>{{ item.episode.block|default('no') }}</itunes:block>
+    <googleplay:block>{{ item.episode.block|default('no') }}</googleplay:block>
 {# /podcast ~#}
 {% for item in pages|sort_by_date %}
 {% set file = asset(item.episode.file) %}
@@ -60,11 +64,11 @@
       <itunes:duration>{{ file.audio.duration|round }}</itunes:duration>
       <itunes:season>{{ item.episode.season|default('0') }}</itunes:season>
       <itunes:episode>{{ item.episode.number|default('0') }}</itunes:episode>
-      <itunes:episodeType>{{ item.episode.type|default('full')|lower }}</itunes:episodeType>{# 'full', 'trailer' or 'bonus' ~#}
-      <itunes:explicit>{{ item.episode.explicit|default('false')|lower }}</itunes:explicit>
-      <googleplay:explicit>{{ item.episode.explicit|default('no')|capitalize }}</googleplay:explicit>
-      <itunes:block>{{ item.episode.block|default('no')|lower }}</itunes:block>
-      <googleplay:block>{{ item.episode.block|default('no')|capitalize }}</googleplay:block>
+      <itunes:episodeType>{{ item.episode.type|default('full') }}</itunes:episodeType>{# 'full', 'trailer' or 'bonus' ~#}
+      <itunes:explicit>{{ item.episode.explicit|default('no') }}</itunes:explicit>
+      <googleplay:explicit>{{ item.episode.explicit|default('no') }}</googleplay:explicit>
+      <itunes:block>{{ item.episode.block|default('no') }}</itunes:block>
+      <googleplay:block>{{ item.episode.block|default('no') }}</googleplay:block>
 {# /episode #}
     </item>
 {% endfor %}
