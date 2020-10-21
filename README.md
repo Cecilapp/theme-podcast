@@ -1,6 +1,6 @@
 # Cecil component theme: Podcast
 
-The _Podcast_ component theme for [Cecil](https://cecil.app) provide templates to publish an audio show on the web:
+> The _Podcast_ component theme for [Cecil](https://cecil.app) provide templates to publish an audio show on the web.
 
 - a RSS output for the `episodes` section (with a style sheet)
 - a HTML audio player with resume feature and [Media Session API](https://developer.mozilla.org/docs/Web/API/Media_Session_API) support
