@@ -14,7 +14,7 @@
     <lastBuildDate>{{ date|date('c') }}</lastBuildDate>
     <link>{{ url(page, {canonical:true}) }}</link>
     <language>{{ site.language|default('en') }}</language>
-{% if site.copyright is defined %}
+{% if site.copyright is defined and site.copyright %}
     <copyright><![CDATA[{{ site.copyright }}]]></copyright>
 {% endif %}
     <generator>{{ cecil.url }}</generator>
@@ -22,8 +22,6 @@
     <itunes:subtitle><![CDATA[{{ site.baseline }}]]></itunes:subtitle>
     <itunes:summary><![CDATA[{{ site.description }}]]></itunes:summary>
     <googleplay:description><![CDATA[{{ site.description }}]]></googleplay:description>
-    <itunes:author><![CDATA[{{ site.podcast.author }}]]></itunes:author>
-    <googleplay:author><![CDATA[{{ site.podcast.author }}]]></googleplay:author>
     <itunes:owner>
       <itunes:name><![CDATA[{{ site.podcast.owner.name }}]]></itunes:name>
       <itunes:email>{{ site.podcast.owner.email }}</itunes:email>
@@ -39,10 +37,16 @@
     </image>
     <itunes:image href="{{ url(site.podcast.image, {canonical:true}) }}" />
     <googleplay:image href="{{ url(site.podcast.image, {canonical:true}) }}" />
+{% if site.podcast.author is defined and site.podcast.author %}
+    <itunes:author><![CDATA[{{ site.podcast.author }}]]></itunes:author>
+    <googleplay:author><![CDATA[{{ site.podcast.author }}]]></googleplay:author>
+{% endif %}
+{% if site.podcast.categories is defined and site.podcast.categories %}
 {% for category in site.podcast.categories %}{# https://help.apple.com/itc/podcasts_connect/#/itc9267a2f12 #}
     <itunes:category text="{{ category|e }}" />
     <googleplay:category text="{{ category|e }}" />
 {% endfor %}
+{% endif %}
     <itunes:explicit>{{ site.podcast.explicit|default('no') }}</itunes:explicit>
     <googleplay:explicit>{{ site.podcast.explicit|default('no') }}</googleplay:explicit>
     <itunes:type>{{ site.podcast.type|default('episodic') }}</itunes:type>{# 'episodic' or 'serial' #}
