@@ -52,10 +52,10 @@
     <googleplay:explicit>{{ site.podcast.explicit|default('no') }}</googleplay:explicit>
     <itunes:block>{{ item.episode.block|default('no') }}</itunes:block>
     <googleplay:block>{{ item.episode.block|default('no') }}</googleplay:block>
-{% if podcast.newfeedurl is defined and podcast.newfeedurl %}
-    <itunes:new-feed-url>{{ podcast.newfeedurl }}</itunes:new-feed-url>
-{% endif %}
-{# /podcast ~#}
+{%- if site.podcast.newfeedurl is defined and site.podcast.newfeedurl ~%}
+    <itunes:new-feed-url>{{ site.podcast.newfeedurl }}</itunes:new-feed-url>
+{%- endif -%}
+{#- /podcast ~#}
 {% for item in pages|sort_by_date %}
 {% set file = asset(item.episode.file) %}
     <item>
