@@ -47,11 +47,14 @@
     <googleplay:category text="{{ category|e }}" />
 {% endfor %}
 {% endif %}
+    <itunes:type>{{ site.podcast.type|default('episodic') }}</itunes:type>{# 'episodic' or 'serial' #}
     <itunes:explicit>{{ site.podcast.explicit|default('no') }}</itunes:explicit>
     <googleplay:explicit>{{ site.podcast.explicit|default('no') }}</googleplay:explicit>
-    <itunes:type>{{ site.podcast.type|default('episodic') }}</itunes:type>{# 'episodic' or 'serial' #}
     <itunes:block>{{ item.episode.block|default('no') }}</itunes:block>
     <googleplay:block>{{ item.episode.block|default('no') }}</googleplay:block>
+{% if podcast.newfeedurl is defined and podcast.newfeedurl %}
+    <itunes:new-feed-url>{{ podcast.newfeedurl }}</itunes:new-feed-url>
+{% endif %}
 {# /podcast ~#}
 {% for item in pages|sort_by_date %}
 {% set file = asset(item.episode.file) %}
