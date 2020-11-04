@@ -27,16 +27,17 @@ Add podcast configuration details:
 
 ```yaml
 podcast:
-  author: Cecil
   owner:
     name: Cecil
     email: contact@cecil.app
   image: cover.png
+  author: Cecil
   categories:
     - Technology
   type: episodic
-  explicit: no
-  block: no
+  explicit: "no"
+  block: "no"
+  newfeedurl: ""
   subscribe:
     - name: apple
       url: https://podcasts.apple.com/fr/podcast/staticast/idXXXXXXXXXX
@@ -49,7 +50,7 @@ podcast:
       enabled: true
 ```
 
-Add episode in `episodes`'s section with data (in the [front matter](https://cecil.app/documentation/content/#front-matter)) and description:
+Add episode in `episodes` section with data (in the [front matter](https://cecil.app/documentation/content/#front-matter)) and description:
 
 ```yaml
 ---

@@ -1,11 +1,13 @@
-<audio controls src="{{ page.episode.file }}" id="audioplayer"></audio>
-<p><a href="{{ page.episode.file }}" target="_blank" rel="noopener" download>Download file</a> | <a href="{{ page.episode.file }}" target="_blank" rel="noopener">Play in new window</a></p>
+<audio controls src="{{ url(page.episode.file) }}" id="audioplayer"></audio>
+<p><a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener" download>Download file</a> | <a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener">Play in new window</a></p>
 <script>
   window.addEventListener('DOMContentLoaded', (event) => {
     const audioplayer = document.getElementById('audioplayer');
-    // resume position
+    // loading
     //audioplayer.onloadedmetadata = (event) => {
+    // onloadedmetadata event don't works...
     setTimeout(function() {
+      // resume position
       const startTime = localStorage.getItem('{{ page.episode.file }}');
       console.log('startTime: ', startTime);
       if (startTime !== null) {
@@ -18,15 +20,16 @@
       }
     }, 1000);
     //};
-    // save position
+    // playing
     audioplayer.ontimeupdate = function() {
+      // save position
       if (audioplayer.currentTime > 0) {
         localStorage.setItem('{{ page.episode.file }}', audioplayer.currentTime);
       }
-      // update page's title (and meta datas)
+      // update page's title...
       const title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
       document.title = title;
-      // meta data
+      // ...and meta data
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')',
@@ -37,35 +40,36 @@
         });
       }
     };
-    // constrols
+    // display constrols
     if ('mediaSession' in navigator) {
       const defaultSkipTime = 10;
       try {
-        // backward or forward 10s
+        // backward (10s)
         navigator.mediaSession.setActionHandler('seekbackward', (details) => {
           const skipTime = details.seekOffset || defaultSkipTime;
           audioplayer.currentTime = Math.max(audioplayer.currentTime - skipTime, 0);
         });
+        // forward (10s)
         navigator.mediaSession.setActionHandler('seekforward', (details) => {
           const skipTime = details.seekOffset || defaultSkipTime;
           audioplayer.currentTime = Math.min(audioplayer.currentTime + skipTime, audioplayer.duration);
         });
-{% if page.prev is defined  %}
+        {%- if page.prev is defined ~%}
         // previous episode
         navigator.mediaSession.setActionHandler('previoustrack', () => {
           console.log('previous: {{ page.prev.title }}');
           window.location = '{{ url(page.prev.path) }}#autoplay';
         });
-{% endif  %}
-{% if page.next is defined  %}
+        {%- endif ~%}
+        {%- if page.next is defined ~%}
         // next episode
         navigator.mediaSession.setActionHandler('nexttrack', () => {
           console.log('next: {{ page.next.title }}');
           window.location = '{{ url(page.next.path) }}#autoplay';
         });
-{% endif  %}
+        {%- endif ~%}
       } catch (error) {
-        console.log('The media session action "${action}" is not supported yet.');
+        console.log('The Media Session action "${action}" is not supported yet.');
       }
     }
     // format time
