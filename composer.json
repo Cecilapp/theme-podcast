@@ -2,14 +2,10 @@
   "name": "cecil/theme-podcast",
   "type": "cecil-theme",
   "description": "Cecil component theme: Podcast",
-  "keywords": [
-    "Cecil",
-    "theme",
-    "podcast"
-  ],
+  "keywords": ["Cecil", "theme", "podcast"],
   "license": "MIT",
   "require": {
-    "cecil/theme-installer": "^1.3"
+    "cecil/theme-installer": "^1.4"
   },
   "extra": {
     "name": "podcast",
