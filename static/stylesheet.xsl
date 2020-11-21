@@ -136,9 +136,6 @@
                 <span><xsl:value-of select="substring(pubDate, 1, 10)" /></span> |
                 <span><xsl:value-of select="format-number(floor(itunes:duration div 60), '0')" /> min</span>
               </div>
-              <xsl:if test="description">
-                <p><xsl:value-of select="description" disable-output-escaping="yes"/></p>
-              </xsl:if>
               <p>
                 <audio>
                   <xsl:attribute name="controls" />
@@ -164,6 +161,9 @@
                 </a> |
                 <xsl:value-of select="format-number(number(enclosure/@length div '1024000'), '0')" /> Mo
               </div>
+              <xsl:if test="description">
+                <p><xsl:value-of select="description" disable-output-escaping="yes"/></p>
+              </xsl:if>
             </div>
           </xsl:for-each>
         </main>
