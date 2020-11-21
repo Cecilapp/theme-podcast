@@ -1,6 +1,6 @@
 <audio controls src="{{ url(page.episode.file) }}" id="audioplayer"></audio>
 <p><a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener" download>Download file</a> | <a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener">Play in new window</a></p>
-<script>
+<script>{% apply minify_js %}
   window.addEventListener('DOMContentLoaded', (event) => {
     const audioplayer = document.getElementById('audioplayer');
     // loading
@@ -80,4 +80,5 @@
       return m + ':' + s;
     }
   });
-</script>
+{% endapply %}</script>
+
