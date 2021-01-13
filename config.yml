@@ -1,6 +1,6 @@
 podcast:
-  author: Cecil
   owner:
     name: Cecil
     email: contact@cecil.app
+  author: Cecil
   image: cover.png
