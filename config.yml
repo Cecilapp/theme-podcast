@@ -4,3 +4,7 @@ podcast:
     email: contact@cecil.app
   author: Cecil
   image: cover.png
+  player:
+    links:
+      download: false
+      open: false

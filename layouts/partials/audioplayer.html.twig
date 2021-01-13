@@ -1,5 +1,26 @@
+{# audio player #}
 <audio controls src="{{ url(page.episode.file) }}" id="audioplayer"></audio>
-<p><a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener" download>Download file</a> | <a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener">Play in new window</a></p>
+{# links #}
+{% if site.podcast.player.links.download or site.podcast.player.links.open %}
+<div class="links">
+{% if site.podcast.player.links.download %}
+  <a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener" download>Download file</a>
+{% endif %}
+{% if site.podcast.player.links.download and site.podcast.player.links.open %}
+&nbsp;|&nbsp;
+{% endif %}
+{% if site.podcast.player.links.open %}
+  <a href="{{ url(page.episode.file) }}" target="_blank" rel="noopener">Play in new window</a>
+{% endif %}
+</div>
+{% endif %}
+{# CSS #}
+<style>
+  div.links {
+    text-align: center;
+  }
+</style>
+{# JS super powers #}
 <script>{% apply minify_js %}
   window.addEventListener('DOMContentLoaded', (event) => {
     const audioplayer = document.getElementById('audioplayer');
