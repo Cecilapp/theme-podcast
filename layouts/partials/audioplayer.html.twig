@@ -30,7 +30,7 @@
     setTimeout(function() {
       // resume position
       const startTime = localStorage.getItem('{{ page.episode.file }}');
-      console.log('startTime: ', startTime);
+      console.log('Player startTime: ', startTime);
       if (startTime !== null) {
         audioplayer.currentTime = startTime;
       }
@@ -78,14 +78,12 @@
         {%- if page.prev is defined ~%}
         // previous episode
         navigator.mediaSession.setActionHandler('previoustrack', () => {
-          console.log('previous: {{ page.prev.title }}');
           window.location = '{{ url(page.prev.path) }}#autoplay';
         });
         {%- endif ~%}
         {%- if page.next is defined ~%}
         // next episode
         navigator.mediaSession.setActionHandler('nexttrack', () => {
-          console.log('next: {{ page.next.title }}');
           window.location = '{{ url(page.next.path) }}#autoplay';
         });
         {%- endif ~%}
