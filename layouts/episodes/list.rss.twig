@@ -27,22 +27,23 @@
       <itunes:email>{{ site.podcast.owner.email }}</itunes:email>
     </itunes:owner>
     <googleplay:owner>{{ site.podcast.owner.email }}</googleplay:owner>
+    {%- set cover = asset(site.podcast.image) ~%}
     <image>
-      <url>{{ url(site.podcast.image, {canonical:true}) }}</url>
+      <url>{{ cover|url({canonical:true}) }}</url>
       <title><![CDATA[{{ site.title }}]]></title>
       <link>{{ url(page, {canonical:true}) }}</link>
       <description><![CDATA[{{ site.title }}]]></description>
-      <width>{{ asset(site.podcast.image).width }}</width>
-      <height>{{ asset(site.podcast.image).height }}</height>
+      <width>{{ cover.width }}</width>
+      <height>{{ cover.height }}</height>
     </image>
-    <itunes:image href="{{ url(site.podcast.image, {canonical:true}) }}" />
-    <googleplay:image href="{{ url(site.podcast.image, {canonical:true}) }}" />
+    <itunes:image href="{{ cover|url({canonical:true}) }}" />
+    <googleplay:image href="{{ cover|url({canonical:true}) }}" />
     {%- if site.podcast.author is defined and site.podcast.author ~%}
     <itunes:author><![CDATA[{{ site.podcast.author }}]]></itunes:author>
     <googleplay:author><![CDATA[{{ site.podcast.author }}]]></googleplay:author>
     {%- endif ~%}
     {%- if site.podcast.categories is defined and site.podcast.categories ~%}
-    {%- for category in site.podcast.categories %}{# https://help.apple.com/itc/podcasts_connect/#/itc9267a2f12 ~#}
+    {%- for category in site.podcast.categories %}{# https://podcasters.apple.com/support/1691-apple-podcasts-categories ~#}
     <itunes:category text="{{ category|e }}" />
     <googleplay:category text="{{ category|e }}" />
     {%- endfor ~%}
@@ -65,9 +66,13 @@
       <pubDate>{{ item.date|date('c') }}</pubDate>
       <link>{{ url(item, {canonical:true}) }}</link>
       {#- episode ~#}
+      {%- if item.episode.image is defined ~%}
+      {%- set item_cover = asset(item.episode.image) ~%}
+      <itunes:image href="{{ item_cover|url({canonical:true}) }}" />
+      {%- endif ~%}
       <itunes:summary><![CDATA[{{ item.content }}]]></itunes:summary>
       <googleplay:description><![CDATA[{{ item.content }}]]></googleplay:description>
-      <enclosure url="{{ url(file, {canonical:true}) }}" length="{{ file.size }}" type="{{ file.subtype }}" />
+      <enclosure url="{{ file|url({canonical:true}) }}" length="{{ file.size }}" type="{{ file.subtype }}" />
       <itunes:duration>{{ file.audio.duration|round }}</itunes:duration>
       <itunes:season>{{ item.episode.season|default('0') }}</itunes:season>
       <itunes:episode>{{ item.episode.number|default('0') }}</itunes:episode>
