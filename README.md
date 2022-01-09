@@ -1,10 +1,9 @@
 # Cecil component theme: Podcast
 
-> The _Podcast_ component theme for [Cecil](https://cecil.app) provide templates to publish an audio show on the web.
+The _Podcast_ component theme for [Cecil](https://cecil.app) provide templates to publish an audio show on the web:
 
-- a RSS output for the `episodes` section (with a style sheet)
-- a HTML audio player with resume feature and [Media Session API](https://developer.mozilla.org/docs/Web/API/Media_Session_API) support
-- a generic cover image
+1. a RSS output for the `episodes` section (with a style sheet)
+2. a HTML audio player with resume feature and [Media Session API](https://developer.mozilla.org/docs/Web/API/Media_Session_API) support
 
 ## Installation
 
@@ -23,7 +22,7 @@ theme:
   - podcast
 ```
 
-Add podcast configuration details:
+Add podcast configuration details in your `config.yml`:
 
 ```yaml
 podcast:
@@ -35,22 +34,14 @@ podcast:
   categories:
     - Technology
   type: episodic
-  explicit: "no"
-  block: "no"
-  newfeedurl: ""
-  subscribe:
-    - name: apple
-      url: https://podcasts.apple.com/fr/podcast/staticast/idXXXXXXXXXX
-      enabled: true
-    - name: google
-      url: https://podcasts.google.com/feed/XXXXXXXXXX
-      enabled: true
-    - name: spotify
-      url: https://open.spotify.com/show/XXXXXXXXXX
-      enabled: true
+  explicit: no
+  block: no
+  newfeedurl: '' # optional, the URL of the new feed in case of hosting changement
 ```
 
-Add episode in `episodes` section with data (in the [front matter](https://cecil.app/documentation/content/#front-matter)) and description:
+Add an episode in `episodes` section with data (in the [front matter](https://cecil.app/documentation/content/#front-matter)) and description:
+
+_1.md_:
 
 ```yaml
 ---
@@ -64,7 +55,7 @@ episode:
   explicit: no # optional
   block: no    # optional
 ---
-Episode description.
+Description and notes of the episode.
 ```
 
 Add the HTML player to your episode's template:
