@@ -30,16 +30,16 @@ podcast:
     name: Cecil
     email: contact@cecil.app
   image: cover.png
-  author: Cecil
-  categories:
+  author: Cecil  # optional
+  categories:    # https://podcasters.apple.com/support/1691-apple-podcasts-categories
     - Technology
-  type: episodic
-  explicit: no
-  block: no
-  newfeedurl: '' # optional, the URL of the new feed in case of hosting changement
+  type: episodic # optional, "episodic" (default) or "serial"
+  explicit: no   # optional
+  block: no      # optional
+  newfeedurl: "" # optional, the URL of the new feed in case of hosting changement
 ```
 
-Add an episode in `episodes` section with data (in the [front matter](https://cecil.app/documentation/content/#front-matter)) and description:
+Add a Markdown file in `episodes` section with data (in the [front matter](https://cecil.app/documentation/content/#front-matter)) and description:
 
 _1.md_:
 
@@ -48,10 +48,10 @@ _1.md_:
 title: "Episode X"
 date: YYYY-MM-DD
 episode:
-  file: /episode-X.mp3
+  file: episode-X.mp3
   season: 0    # optional
   number: X    # optional
-  type: full   # optional
+  type: full   # optional, "full", "trailer" or "bonus"
   explicit: no # optional
   block: no    # optional
 ---
