@@ -34,9 +34,13 @@
     setTimeout(function() {
       // resume position
       const startTime = localStorage.getItem('{{ file }}');
-      console.log('Player startTime: ', startTime);
+      console.log('Player startTime:', startTime);
       if (startTime !== null) {
-        audioplayer.currentTime = startTime;
+        if (startTime == 'ended') {
+          audioplayer.currentTime = audioplayer.duration;
+        } else {
+          audioplayer.currentTime = startTime;
+        }
       }
       // autoplay
       const hash = window.location.hash
@@ -46,7 +50,7 @@
     }, 1000);
     //};
     // playing
-    audioplayer.ontimeupdate = function() {
+    audioplayer.addEventListener('timeupdate', function() {
       // save position
       if (audioplayer.currentTime > 0) {
         localStorage.setItem('{{ file }}', audioplayer.currentTime);
@@ -54,7 +58,11 @@
       // update page's title...
       const title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
       document.title = title;
-    };
+    });
+    // ended
+    audioplayer.addEventListener('ended', function() {
+      localStorage.setItem('{{ file }}', 'ended');
+    });
     // media session
     if ('mediaSession' in navigator) {
       // media meta data
