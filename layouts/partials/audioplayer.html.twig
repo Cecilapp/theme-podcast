@@ -29,9 +29,9 @@
   window.addEventListener('DOMContentLoaded', (event) => {
     const audioplayer = document.getElementById('audioplayer');
     // loading
-    //audioplayer.onloadedmetadata = (event) => {
-    // onloadedmetadata event don't works...
-    setTimeout(function() {
+    audioplayer.onloadedmetadata = (event) => {
+    // if onloadedmetadata don't works use timeout...
+    //setTimeout(function() {
       // resume position
       const startTime = localStorage.getItem('{{ file }}');
       console.log('Player startTime:', startTime);
@@ -47,14 +47,14 @@
       if (hash == '#autoplay') {
         audioplayer.play();
       }
-    }, 1000);
-    //};
+    //}, 1000);
+    };
     // playing
     audioplayer.addEventListener('timeupdate', function() {
       // save position
-      if (audioplayer.currentTime > 0) {
+      //if (audioplayer.currentTime > 0) {
         localStorage.setItem('{{ file }}', audioplayer.currentTime);
-      }
+      //}
       // update page's title...
       const title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
       document.title = title;
