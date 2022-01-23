@@ -33,7 +33,7 @@
     // if onloadedmetadata don't works use timeout...
     //setTimeout(function() {
       // resume position
-      const startTime = sessionStorage.getItem('{{ file }}');
+      const startTime = localStorage.getItem('{{ file }}');
       console.log('Player startTime:', startTime);
       if (startTime !== null) {
         if (startTime == 'ended') {
@@ -53,7 +53,7 @@
     audioplayer.addEventListener('timeupdate', function() {
       // save position
       //if (audioplayer.currentTime > 0) {
-        sessionStorage.setItem('{{ file }}', audioplayer.currentTime);
+        localStorage.setItem('{{ file }}', audioplayer.currentTime);
       //}
       // update page's title...
       const title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
@@ -61,7 +61,7 @@
     });
     // ended
     audioplayer.addEventListener('ended', function() {
-      sessionStorage.setItem('{{ file }}', 'ended');
+      localStorage.setItem('{{ file }}', 'ended');
     });
     // media session
     if ('mediaSession' in navigator) {
