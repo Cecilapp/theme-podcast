@@ -49,11 +49,11 @@
     {%- endfor ~%}
     {%- endif ~%}
     <itunes:type>{{ site.podcast.type|default('episodic') }}</itunes:type>{# 'episodic' or 'serial' ~#}
-    {%- if site.podcast.explicit == 'yes' ~%}
+    {%- if site.podcast.explicit|default('no') == 'yes' ~%}
     <itunes:explicit>{{ site.podcast.explicit }}</itunes:explicit>
     <googleplay:explicit>{{ site.podcast.explicit }}</googleplay:explicit>
     {%- endif ~%}
-    {%- if site.podcast.block == 'yes' ~%}
+    {%- if site.podcast.block|default('no') == 'yes' ~%}
     <itunes:block>{{ site.podcast.block }}</itunes:block>
     <googleplay:block>{{ site.podcast.block }}</googleplay:block>
     {%- endif ~%}
