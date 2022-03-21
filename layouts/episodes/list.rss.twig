@@ -14,7 +14,7 @@
     <lastBuildDate>{{ date|date('c') }}</lastBuildDate>
     <link>{{ url(page, {canonical: true}) }}</link>
     <language>{{ site.language|default('en') }}</language>
-    {%- if site.copyright is defined and site.copyright ~%}
+    {%- if site.copyright|default('') ~%}
     <copyright><![CDATA[{{ site.copyright }}]]></copyright>
     {%- endif ~%}
     <generator>{{ cecil.url }}</generator>
@@ -38,22 +38,26 @@
     </image>
     <itunes:image href="{{ cover|url({canonical: true}) }}" />
     <googleplay:image href="{{ cover|url({canonical: true}) }}" />
-    {%- if site.podcast.author is defined and site.podcast.author ~%}
+    {%- if site.podcast.author|default('') ~%}
     <itunes:author><![CDATA[{{ site.podcast.author }}]]></itunes:author>
     <googleplay:author><![CDATA[{{ site.podcast.author }}]]></googleplay:author>
     {%- endif ~%}
-    {%- if site.podcast.categories is defined and site.podcast.categories ~%}
+    {%- if site.podcast.categories is iterable ~%}
     {%- for category in site.podcast.categories %}{# https://podcasters.apple.com/support/1691-apple-podcasts-categories ~#}
     <itunes:category text="{{ category|e }}" />
     <googleplay:category text="{{ category|e }}" />
     {%- endfor ~%}
     {%- endif ~%}
     <itunes:type>{{ site.podcast.type|default('episodic') }}</itunes:type>{# 'episodic' or 'serial' ~#}
-    <itunes:explicit>{{ site.podcast.explicit|default('no') }}</itunes:explicit>
-    <googleplay:explicit>{{ site.podcast.explicit|default('no') }}</googleplay:explicit>
-    <itunes:block>{{ item.episode.block|default('no') }}</itunes:block>
-    <googleplay:block>{{ item.episode.block|default('no') }}</googleplay:block>
-    {%- if site.podcast.newfeedurl is defined and site.podcast.newfeedurl ~%}
+    {%- if site.podcast.explicit == 'yes' ~%}
+    <itunes:explicit>{{ site.podcast.explicit }}</itunes:explicit>
+    <googleplay:explicit>{{ site.podcast.explicit }}</googleplay:explicit>
+    {%- endif ~%}
+    {%- if site.podcast.block == 'yes' ~%}
+    <itunes:block>{{ site.podcast.block }}</itunes:block>
+    <googleplay:block>{{ site.podcast.block }}</googleplay:block>
+    {%- endif ~%}
+    {%- if site.podcast.newfeedurl|default('') ~%}
     <itunes:new-feed-url>{{ site.podcast.newfeedurl }}</itunes:new-feed-url>
     {%- endif -%}
     {#- /podcast ~#}
@@ -74,13 +78,21 @@
       <googleplay:description><![CDATA[{{ item.content }}]]></googleplay:description>
       <enclosure url="{{ file|url({canonical: true}) }}" length="{{ file.size }}" type="{{ file.subtype }}" />
       <itunes:duration>{{ file.audio.duration|round }}</itunes:duration>
-      <itunes:season>{{ item.episode.season|default('0') }}</itunes:season>
-      <itunes:episode>{{ item.episode.number|default('0') }}</itunes:episode>
+      {%- if item.episode.season|default('0') != '0' ~%}
+      <itunes:season>{{ item.episode.season }}</itunes:season>
+      {%- endif ~%}
+      {%- if item.episode.number|default('0') != '0' ~%}
+      <itunes:episode>{{ item.episode.number }}</itunes:episode>
+      {%- endif ~%}
       <itunes:episodeType>{{ item.episode.type|default('full') }}</itunes:episodeType>{# 'full', 'trailer' or 'bonus' ~#}
-      <itunes:explicit>{{ item.episode.explicit|default('no') }}</itunes:explicit>
-      <googleplay:explicit>{{ item.episode.explicit|default('no') }}</googleplay:explicit>
-      <itunes:block>{{ item.episode.block|default('no') }}</itunes:block>
-      <googleplay:block>{{ item.episode.block|default('no') }}</googleplay:block>
+      {%- if item.episode.explicit|default('no') == 'yes' ~%}
+      <itunes:explicit>{{ item.episode.explicit }}</itunes:explicit>
+      <googleplay:explicit>{{ item.episode.explicit }}</googleplay:explicit>
+      {%- endif ~%}
+      {%- if item.episode.block|default('no') == 'yes' ~%}
+      <itunes:block>{{ item.episode.block }}</itunes:block>
+      <googleplay:block>{{ item.episode.block }}</googleplay:block>
+      {%- endif ~%}
       {#- /episode ~#}
     </item>
     {%- endfor ~%}
