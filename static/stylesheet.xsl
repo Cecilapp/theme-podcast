@@ -4,15 +4,16 @@
   <xsl:template match="/">
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
-        <title><xsl:value-of select="/rss/channel/title"/> RSS Feed</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title><xsl:value-of select="/rss/channel/title"/> RSS Feed</title>
         <style type="text/css">
           body {
             font-family: Helvetica, Arial, sans-serif;
-            font-size: 14px;
+            font-size: 1rem;
+            line-height: 1.5rem;
             color: #545454;
             background: #F1F3F4;
-            line-height: 1.5;
           }
           a, a:link, a:visited {
             color: #003E82;
@@ -23,10 +24,10 @@
           }
           h1, h2, h3, p {
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: .8rem;
           }
           h2 {
-            margin-bottom: 5px;
+            margin-bottom: .5rem;
           }
           h3 {
             font-style: italic;
@@ -35,53 +36,50 @@
             width: 100%;
           }
           .about {
+            margin: .5rem 0;
             font-style: italic;
-            font-size: 10px;
-            color: #9E9E9E;
+            font-size: .75rem;
             text-align: center;
-            margin-top: 20px;
+            color: #9E9E9E;
           }
           main {
-            width: 800px;
+            max-width: 800px;
             margin: 0 auto;
             background: #FFF;
-            padding: 30px;
+            padding: 2rem 2rem 0;
             border-radius: 4px;
           }
           #podcast-image {
             float: right;
-            width: 150px;
-            margin-bottom: 20px;
+            margin-left: 1rem;
           }
           #podcast-image img {
-            width: 150px;
+            width: 6rem;
             height: auto;
             border-radius: 5px;
           }
           #podcast-header {
-            margin-bottom: 20px;
+            margin-bottom: 2rem;
           }
           .episode {
             clear: both;
             border-top: 1px solid #E5E5E5;
-            padding-top: 20px;
-            padding-bottom: 20px;
+            padding-top: 2rem;
+            padding-bottom: 1rem;
           }
           .episode-image img {
             width: 100px;
             height: auto;
-            margin: 0 30px 15px 0;
+            margin: 0 2rem 1rem 0;
             border-radius: 5px;
           }
           .episode-time {
-            font-size: 12px;
+            margin-bottom: 1rem;
+            font-size: .85rem;
             color: #545d67;
-            margin-bottom: 1em;
           }
           .episode-meta {
-            font-size: 11px;
-            font-weight: bold;
-            font-style: italic;
+            font-size: .8rem;
           }
         </style>
       </head>
@@ -92,19 +90,11 @@
             <xsl:if test="/rss/channel/image">
               <div id="podcast-image">
                 <a>
-                  <xsl:attribute name="href">
-                    <xsl:value-of select="/rss/channel/image/link"/>
-                  </xsl:attribute>
+                  <xsl:attribute name="href"><xsl:value-of select="/rss/channel/image/link"/></xsl:attribute>
                   <img>
-                    <xsl:attribute name="src">
-                      <xsl:value-of select="/rss/channel/image/url"/>
-                    </xsl:attribute>
-                    <xsl:attribute name="title">
-                      <xsl:value-of select="/rss/channel/image/description"/>
-                    </xsl:attribute>
-                    <xsl:attribute name="alt">
-                      <xsl:value-of select="/rss/channel/image/title"/>
-                    </xsl:attribute>
+                    <xsl:attribute name="src"><xsl:value-of select="/rss/channel/image/url"/></xsl:attribute>
+                    <xsl:attribute name="title"><xsl:value-of select="/rss/channel/image/description"/></xsl:attribute>
+                    <xsl:attribute name="alt"><xsl:value-of select="/rss/channel/image/title"/></xsl:attribute>
                   </img>
                 </a>
               </div>
