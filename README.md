@@ -1,4 +1,4 @@
-# Cecil component theme: Podcast
+# Podcast component theme
 
 The _Podcast_ component theme for [Cecil](https://cecil.app) provide templates to publish an audio show on the web:
 
