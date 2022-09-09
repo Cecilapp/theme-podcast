@@ -49,6 +49,27 @@
             padding: 2rem 2rem 0;
             border-radius: 4px;
           }
+          aside {
+            border-radius: 1rem;
+            background-color: #F1F3F4;
+            margin: 1rem 0 1rem 0;
+            padding: 1rem;
+            max-width: fit-content;
+          }
+          form {
+            margin-bottom: auto;
+          }
+          input {
+            min-width: 100%;
+            margin-left: 0.2rem;
+            padding-left: 0.2rem;
+            padding-right: 0.2rem;
+          }
+          @media (min-width: 768px) {
+            input {
+              min-width: 20rem;
+            }
+          }
           #podcast-image {
             float: right;
             margin-left: 1rem;
@@ -106,11 +127,23 @@
             <p>
               <a>
                 <xsl:attribute name="href">
-                  <xsl:value-of select="/rss/channel/link"/>
+                  <xsl:value-of select="/rss/channel/link[@rel='alternate']/@href"/>
                 </xsl:attribute>
-                Visit podcast website →
+                Visit the podcast website →
               </a>
             </p>
+            <aside>
+              <p>To subscribe, copy the feed URL to your podcast reader.</p>
+              <form>
+                <label for="feed-url">Feed URL:</label>
+                <input id="feed-url" onClick="this.select();">
+                  <xsl:attribute name="type">url</xsl:attribute>
+                  <xsl:attribute name="url">URL</xsl:attribute>
+                  <xsl:attribute name="spellcheck">false</xsl:attribute>
+                  <xsl:attribute name="value"><xsl:value-of select="/rss/channel/link[@rel='self']/@href" /></xsl:attribute>
+                </input>
+              </form>
+            </aside>
           </div>
           <xsl:for-each select="/rss/channel/item">
             <div class="episode">
