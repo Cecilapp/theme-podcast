@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-09-09 23:24+0200\n"
-"PO-Revision-Date: 2022-09-09 23:25+0200\n"
+"POT-Creation-Date: 2022-09-24 02:19+0200\n"
+"PO-Revision-Date: 2022-09-24 02:19+0200\n"
 "Last-Translator: Arnaud Ligny <arnaud@ligny.org>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -49,33 +49,3 @@ msgstr "%duration% min"
 #: podcast.xsl.twig:197
 msgid "%length% Mo"
 msgstr "%length% Mo"
-
-#~ msgid "Subscribe in"
-#~ msgstr "Abonnez-vous"
-
-#~ msgid "Hosted by"
-#~ msgstr "Hébergé par"
-
-#~ msgid "Available episodes"
-#~ msgstr "Épisodes disponibles"
-
-#~ msgid "Download"
-#~ msgstr "Télécharger"
-
-#~ msgid "Mark as read / unread"
-#~ msgstr "Marquer comme lu / non lu"
-
-#~ msgid "Share this episode"
-#~ msgstr "Partager cet épisode"
-
-#~ msgid "Play"
-#~ msgstr "Lire"
-
-#~ msgid "Ended"
-#~ msgstr "Terminé"
-
-#~ msgid "Resume"
-#~ msgstr "Reprendre"
-
-#~ msgid "Last episode"
-#~ msgstr "Dernier épisode"
