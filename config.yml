@@ -8,11 +8,12 @@ podcast:
     links:
       download: false
       open: false
-defaultpages:
-  xsl/podcast:
-    path: xsl/podcast
-    layout: podcast
-    output: xsl
-    uglyurl: true
-    published: true
-    exclude: true
+pages:
+  default:
+    xsl/podcast:
+      path: xsl/podcast
+      layout: podcast
+      output: xsl
+      uglyurl: true
+      published: true
+      exclude: true
