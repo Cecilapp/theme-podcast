@@ -1,7 +1,7 @@
-{#- audio player -#}
+{#- audio player ~#}
 {%- set file = asset(page.episode.file) ~%}
 <audio controls src="{{ file|url }}" id="audioplayer"></audio>
-{#- links -#}
+{#- links ~#}
 {%- if site.podcast.player.links.download or site.podcast.player.links.open ~%}
 <div class="audioplayer-links">
   {%- if site.podcast.player.links.download ~%}
@@ -23,7 +23,8 @@
   }
 </style>
 {#- JS super powers ~#}
-<script>{% apply minify_js %}
+<script>{%- apply minify_js ~%}
+  // handle audio script
   window.addEventListener('DOMContentLoaded', (event) => {
     const audioplayer = document.getElementById('audioplayer');
     // loading
@@ -105,8 +106,7 @@
     function formatTime(time) {
       let m = Math.floor(time % 3600 / 60).toString().padStart(2,'0'),
           s = Math.floor(time % 60).toString().padStart(2,'0');
-
       return m + ':' + s;
     }
   });
-{% endapply %}</script>
+{% endapply ~%}</script>
