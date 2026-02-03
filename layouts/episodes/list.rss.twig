@@ -11,11 +11,11 @@
   <channel>
     <title><![CDATA[{{ site.title }}]]></title>
     <description><![CDATA[{{ site.description }}]]></description>
-    <lastBuildDate>{{ date|date('c') }}</lastBuildDate>
+    <lastBuildDate>{{ updated|date('c') }}</lastBuildDate>
     <link href="{{ url(page, {canonical: true, format: 'rss'}) }}" rel="self" type="application/rss+xml"/>
     <link href="{{ url(page, {canonical: true, format: 'html'}) }}" rel="alternate" type="text/html"/>
     <language>{{ site.language|default('en') }}</language>
-    {%- if site.copyright|default('') ~%}
+    {%- if site.copyright|default ~%}
     <copyright><![CDATA[{{ site.copyright }}]]></copyright>
     {%- endif ~%}
     <generator>{{ cecil.url }}</generator>
@@ -39,7 +39,7 @@
     </image>
     <itunes:image href="{{ cover|url({canonical: true}) }}" />
     <googleplay:image href="{{ cover|url({canonical: true}) }}" />
-    {%- if site.podcast.author|default('') ~%}
+    {%- if site.podcast.author|default ~%}
     <itunes:author><![CDATA[{{ site.podcast.author }}]]></itunes:author>
     <googleplay:author><![CDATA[{{ site.podcast.author }}]]></googleplay:author>
     {%- endif ~%}
@@ -58,11 +58,11 @@
     <itunes:block>{{ site.podcast.block }}</itunes:block>
     <googleplay:block>{{ site.podcast.block }}</googleplay:block>
     {%- endif ~%}
-    {%- if site.podcast.newfeedurl|default('') ~%}
+    {%- if site.podcast.newfeedurl|default ~%}
     <itunes:new-feed-url>{{ site.podcast.newfeedurl }}</itunes:new-feed-url>
     {%- endif -%}
     {#- /podcast ~#}
-    {%- for item in pages|sort_by_date ~%}
+    {%- for item in items ~%}
     {%- set file = asset(item.episode.file) ~%}
     <item>
       <guid>{{ url(item, {canonical: true}) }}</guid>
