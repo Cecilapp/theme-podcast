@@ -1,0 +1,17 @@
+{% extends ['page.html.twig', '_default/page.html.twig'] %}
+
+{%- block content ~%}
+      <h1>{{ page.title }}</h1>
+      {{- page.content ~}}
+      <p><a href="{{ url(page, {format: 'rss'}) }}">{% trans %}Subscribe to the RSS feed{% endtrans %}</a></p>
+      {%- for episode in page.pages.showable|sort_by_date ~%}
+      <article>
+        <header>
+          <h2><a href="{{ url(episode) }}">{{ episode.title }}</a></h2>
+          <small><time datetime="{{ episode.date|date('Y-m-d') }}">{{ episode.date|format_date('long') }}</time></small>
+        </header>
+        {{ episode.content|excerpt_html }}
+        <footer><a href="{{ url(episode) }}#autoplay">▶ {% trans %}Play{% endtrans %}</a></footer>
+      </article>
+      {%- endfor ~%}
+{%- endblock content ~%}

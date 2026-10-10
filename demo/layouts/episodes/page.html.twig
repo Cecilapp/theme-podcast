@@ -1,0 +1,27 @@
+{% extends ['page.html.twig', '_default/page.html.twig'] %}
+
+{%- block content ~%}
+      <article>
+        <header>
+          {%- if page.episode.image is defined ~%}
+          {{ asset(page.episode.image)|html({alt: page.title, class: 'episode-cover'}) }}
+          {%- endif ~%}
+          <h1>{{ page.title }}</h1>
+          <small><time datetime="{{ page.date|date('Y-m-d') }}">{{ page.date|format_date('long') }}</time></small>
+        </header>
+        {{- include('partials/audioplayer.html.twig') ~}}
+        {{- page.content ~}}
+      </article>
+      <nav>
+        <ul>
+          {%- if page.next is defined and page.next ~%}
+          <li><a href="{{ url(page.next) }}">← {{ page.next.title }}</a></li>
+          {%- endif ~%}
+        </ul>
+        <ul>
+          {%- if page.prev is defined and page.prev ~%}
+          <li><a href="{{ url(page.prev) }}">{{ page.prev.title }} →</a></li>
+          {%- endif ~%}
+        </ul>
+      </nav>
+{%- endblock content ~%}
