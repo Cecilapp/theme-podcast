@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
   <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes" />
   <xsl:template match="/">
-    <html xmlns="http://www.w3.org/1999/xhtml">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ site.language }}">
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width" />
@@ -133,7 +133,7 @@
             <p>
               <a>
                 <xsl:attribute name="href">
-                  <xsl:value-of select="/rss/channel/link[@rel='alternate']/@href"/>
+                  <xsl:value-of select="/rss/channel/link"/>
                 </xsl:attribute>
                 {% trans %}Visit the podcast website{% endtrans %} →
               </a>
@@ -144,9 +144,9 @@
                 <label for="feed-url">{% trans %}Feed URL:{% endtrans %}</label>
                 <input id="feed-url" onClick="this.select();">
                   <xsl:attribute name="type">url</xsl:attribute>
-                  <xsl:attribute name="url">URL</xsl:attribute>
+                  <xsl:attribute name="readonly">readonly</xsl:attribute>
                   <xsl:attribute name="spellcheck">false</xsl:attribute>
-                  <xsl:attribute name="value"><xsl:value-of select="/rss/channel/link[@rel='self']/@href" /></xsl:attribute>
+                  <xsl:attribute name="value"><xsl:value-of select="/rss/channel/atom:link[@rel='self']/@href" /></xsl:attribute>
                 </input>
               </form>
             </aside>
@@ -162,9 +162,9 @@
                 </a>
               </h2>
               <div class="episode-time">
-                <span><xsl:value-of select="substring(pubDate, 1, 10)" /></span> |
+                <span><xsl:value-of select="substring(pubDate, 1, 16)" /></span> |
                 {%~ set duration -%}
-                  <xsl:value-of select="format-number(floor(itunes:duration div 60), '0')" />
+                  <xsl:value-of select="format-number(ceiling(itunes:duration div 60), '0')" />
                 {%- endset ~%}
                 <span>{% trans %}%duration% min{% endtrans %}</span>
               </div>
@@ -191,10 +191,10 @@
                   <xsl:attribute name="target">_blank</xsl:attribute>
                   {% trans %}Play in new window{% endtrans %}
                 </a> |
-                {% set length %}
-                  <xsl:value-of select="format-number(number(enclosure/@length div '1024000'), '0')" />
-                {% endset %}
-                {% trans %}%length% Mo{% endtrans %}
+                {%~ set length -%}
+                  <xsl:value-of select="format-number(enclosure/@length div 1048576, '0.0')" />
+                {%- endset ~%}
+                <span>{% trans %}%length% MB{% endtrans %}</span>
               </div>
               <xsl:if test="description">
                 <p><xsl:value-of select="description" disable-output-escaping="yes"/></p>

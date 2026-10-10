@@ -1,15 +1,16 @@
 {#- audio player ~#}
 {%- set file = asset(page.episode.file) ~%}
-<audio controls src="{{ file|url }}" id="audioplayer"></audio>
+{%- set links = site.podcast.player.links ?? {} ~%}
+<audio controls preload="metadata" src="{{ file|url }}" id="audioplayer"></audio>
 {#- links ~#}
-{%- if site.podcast.player.links.download or site.podcast.player.links.open ~%}
+{%- if links.download|default(false) or links.open|default(false) ~%}
 <div class="audioplayer-links">
-  {%- if site.podcast.player.links.download ~%}
+  {%- if links.download|default(false) ~%}
   <div class="audioplayer-link-download">
-    <a href="{{ file|url }}" target="_blank" rel="noopener" download>{% trans %}Download file{% endtrans %}</a>
+    <a href="{{ file|url }}" download>{% trans %}Download file{% endtrans %}</a>
   </div>
   {%- endif ~%}
-  {%- if site.podcast.player.links.open ~%}
+  {%- if links.open|default(false) ~%}
   <div class="audioplayer-link-open">
     <a href="{{ file|url }}" target="_blank" rel="noopener">{% trans %}Play in new window{% endtrans %}</a>
   </div>
@@ -18,94 +19,94 @@
 {%- endif ~%}
 {#- CSS ~#}
 <style>
-  audio {
+  #audioplayer {
     border-radius: 30px;
   }
 </style>
 {#- JS super powers ~#}
 <script>{%- apply minify_js ~%}
   // handle audio script
-  window.addEventListener('DOMContentLoaded', (event) => {
+  window.addEventListener('DOMContentLoaded', () => {
     const audioplayer = document.getElementById('audioplayer');
+    if (!audioplayer) return;
+    const storageKey = '{{ file|e('js') }}';
+    const pageTitle = '{{ page.title|e('js') }}';
+    const storage = {
+      get: () => { try { return localStorage.getItem(storageKey); } catch (e) { return null; } },
+      set: (value) => { try { localStorage.setItem(storageKey, value); } catch (e) {} }
+    };
     // loading
-    audioplayer.onloadedmetadata = (event) => {
-    // if onloadedmetadata don't works use timeout...
-    //setTimeout(function() {
+    audioplayer.addEventListener('loadedmetadata', () => {
       // resume position
-      const startTime = localStorage.getItem('{{ file }}');
-      console.log('Player startTime:', startTime);
+      const startTime = storage.get();
       if (startTime !== null) {
-        if (startTime == 'ended') {
-          audioplayer.currentTime = audioplayer.duration;
-        } else {
-          audioplayer.currentTime = startTime;
-        }
+        audioplayer.currentTime = startTime == 'ended' ? audioplayer.duration : parseFloat(startTime) || 0;
       }
       // autoplay
-      const hash = window.location.hash
-      if (hash == '#autoplay') {
-        audioplayer.play();
+      if (window.location.hash == '#autoplay') {
+        audioplayer.play().catch(() => {});
       }
-    //}, 1000);
-    };
+    });
     // playing
-    audioplayer.addEventListener('timeupdate', function() {
+    audioplayer.addEventListener('timeupdate', () => {
       // save position
-      //if (audioplayer.currentTime > 0) {
-        localStorage.setItem('{{ file }}', audioplayer.currentTime);
-      //}
-      // update page's title...
-      const title = '{{ page.title }} (' + formatTime(audioplayer.currentTime) + ')';
-      document.title = title;
+      if (!audioplayer.ended) {
+        storage.set(audioplayer.currentTime);
+      }
+      // update page's title
+      document.title = pageTitle + ' (' + formatTime(audioplayer.currentTime) + ')';
     });
     // ended
-    audioplayer.addEventListener('ended', function() {
-      localStorage.setItem('{{ file }}', 'ended');
+    audioplayer.addEventListener('ended', () => {
+      storage.set('ended');
     });
     // media session
     if ('mediaSession' in navigator) {
       // media meta data
+      {%- set image = asset(page.episode.image ?? site.podcast.image ?? 'cover.png') ~%}
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: '{{ page.title }}',
-        artist: '{{ page.episode.author|default(site.podcast.author) }}',
-        {%- set image = asset(page.episode.image|default(site.podcast.image)) ~%}
+        title: pageTitle,
+        artist: '{{ (page.episode.author ?? site.podcast.author ?? site.title)|e('js') }}',
         artwork: [
-          { src: '{{ image|url }}', sizes: '{{ image.width }}x{{ image.height }}', type: '{{ image.subtype }}' },
+          { src: '{{ image|url|e('js') }}', sizes: '{{ image.width }}x{{ image.height }}', type: '{{ image.subtype }}' },
         ]
       });
-      // display constrols
+      // display controls
       const defaultSkipTime = 10;
-      try {
+      const actionHandlers = {
         // backward (10s)
-        navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-          const skipTime = details.seekOffset || defaultSkipTime;
-          audioplayer.currentTime = Math.max(audioplayer.currentTime - skipTime, 0);
-        });
+        seekbackward: (details) => {
+          audioplayer.currentTime = Math.max(audioplayer.currentTime - (details.seekOffset || defaultSkipTime), 0);
+        },
         // forward (10s)
-        navigator.mediaSession.setActionHandler('seekforward', (details) => {
-          const skipTime = details.seekOffset || defaultSkipTime;
-          audioplayer.currentTime = Math.min(audioplayer.currentTime + skipTime, audioplayer.duration);
-        });
-        {%- if page.prev is defined ~%}
+        seekforward: (details) => {
+          audioplayer.currentTime = Math.min(audioplayer.currentTime + (details.seekOffset || defaultSkipTime), audioplayer.duration);
+        },
+        {%- if page.prev is defined and page.prev ~%}
         // previous episode
-        navigator.mediaSession.setActionHandler('previoustrack', () => {
-          window.location = '{{ url(page.prev.path) }}#autoplay';
-        });
+        previoustrack: () => {
+          window.location = '{{ url(page.prev)|e('js') }}#autoplay';
+        },
         {%- endif ~%}
-        {%- if page.next is defined ~%}
+        {%- if page.next is defined and page.next ~%}
         // next episode
-        navigator.mediaSession.setActionHandler('nexttrack', () => {
-          window.location = '{{ url(page.next.path) }}#autoplay';
-        });
+        nexttrack: () => {
+          window.location = '{{ url(page.next)|e('js') }}#autoplay';
+        },
         {%- endif ~%}
-      } catch (error) {
-        console.log('The Media Session action "${action}" is not supported yet.');
+      };
+      for (const [action, handler] of Object.entries(actionHandlers)) {
+        try {
+          navigator.mediaSession.setActionHandler(action, handler);
+        } catch (error) {
+          console.log(`The Media Session action "${action}" is not supported yet.`);
+        }
       }
     }
     // format time
     function formatTime(time) {
-      let m = Math.floor(time % 3600 / 60).toString().padStart(2,'0'),
-          s = Math.floor(time % 60).toString().padStart(2,'0');
+      const m = Math.floor(time / 60).toString().padStart(2, '0'),
+            s = Math.floor(time % 60).toString().padStart(2, '0');
       return m + ':' + s;
     }
   });

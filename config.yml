@@ -1,8 +1,4 @@
 podcast:
-  owner:
-    name: Cecil
-    email: contact@cecil.app
-  author: Cecil
   image: cover.png
   player:
     links:
@@ -16,4 +12,6 @@ pages:
       output: xsl
       uglyurl: true
       published: true
-      exclude: true
+      excluded: true
+      serviceworker:
+        precache: false
